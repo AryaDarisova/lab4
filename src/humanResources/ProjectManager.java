@@ -1,5 +1,7 @@
 package humanResources;
 
+import java.time.LocalDate;
+
 public class ProjectManager implements GroupsManager{
     private ProjectsNode head;
     private ProjectsNode tail;
@@ -270,12 +272,28 @@ public class ProjectManager implements GroupsManager{
     }
 
     /*
+    метод, считающий кол-во сотрудников, которые в данный момент находились в командировке
+     */
+
+    public int staffInTravelQuantity(LocalDate startTrip, LocalDate endTrip) {
+        int count = 0;
+        ProjectsNode node = head;
+        while (node != null) {
+            count += node.value.staffInTravelQuantity(startTrip, endTrip);
+            node = node.next;
+        }
+        return count;
+    }
+
+    /*
     Возвращающий массив сотрудников, находящихся в командировке в заданный
     период времени
+    todo метод включения в массив чуваков переписать
+
      */
 
     @Override
-    public  Employee[] getStaffNowInTravel() {
+    public  Employee[] getStaffInTravel(LocalDate startTrip, LocalDate endTrip) {
         Employee[] getStaffNowInTravel = new Employee[nowInTravel()];
         int count = 0;
         ProjectsNode node = head;

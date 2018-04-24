@@ -1,5 +1,7 @@
 package humanResources;
 
+import exceptions.IllegalDatesException;
+
 import java.time.LocalDate;
 
 public class StaffEmployee extends Employee implements BusinessTraveller{
@@ -34,7 +36,7 @@ public class StaffEmployee extends Employee implements BusinessTraveller{
         bonus = BONUS;
     }
 
-    public StaffEmployee(String firstName, String secondName, JobTitlesEnum jobTitle, int salary, BusinessTravel[] travels) {
+    public StaffEmployee(String firstName, String secondName, JobTitlesEnum jobTitle, int salary, BusinessTravel[] travels) throws IllegalDatesException {
         super(firstName, secondName, jobTitle, salary);
         for (BusinessTravel temp : travels) {
             addTravel(temp);
@@ -67,7 +69,15 @@ public class StaffEmployee extends Employee implements BusinessTraveller{
     }
 
     @Override
-    public boolean addTravel(BusinessTravel travel) {
+    public boolean addTravel(BusinessTravel travel) throws IllegalDatesException {
+        for (int i = travel.getStartTrip().getDayOfYear(); i < travel.getEndTrip().getDayOfYear(); i++) {
+            for (BusinessTravel x: this.getTravels()) {
+                for (int j = x.getStartTrip().getDayOfYear(); j < x.getEndTrip().getDayOfYear(); j++) {
+                    if (i == j)
+                        throw new IllegalDatesException("Employee already have travel in that time!");
+                }
+            }
+        }
         ListNode node = new ListNode(travel);
         addNode(node);
         return true;
@@ -179,22 +189,13 @@ public class StaffEmployee extends Employee implements BusinessTraveller{
     @Override
     public int isOnTrip(LocalDate startTrip, LocalDate endTrip) {
         int countDay = 0;
-        for (int i = 0; i < (endTrip.getDayOfYear() - startTrip.getDayOfYear()); i++) {
-            if (startTrip.isBefore(endTrip)) {
-                for (BusinessTravel temp: this.getTravels()) {
-                    for (int j = 0; j < temp.getDaysCount(); j++) {
-                        LocalDate startOfTrip = temp.getStartTrip();
-                        if (startOfTrip.isBefore(temp.getEndTrip())) {
-                            if (startTrip == temp.getStartTrip())
-                                countDay++;
-                        }
-                        startOfTrip.plusDays(1);
-                        temp.getStartTrip().plusDays(1);
-                    }
+        for (int i = startTrip.getDayOfYear(); i < endTrip.getDayOfYear(); i++) {
+            for (BusinessTravel x: this.getTravels()) {
+                for (int j = x.getStartTrip().getDayOfYear(); j < x.getEndTrip().getDayOfYear(); j++) {
+                    if (i == j)
+                        countDay++;
                 }
-
             }
-            startTrip = startTrip.plusDays(1);
         }
         return countDay;
     }

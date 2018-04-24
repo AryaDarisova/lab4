@@ -10,7 +10,6 @@ public final class BusinessTravel {
     private final String destination;
 
     private static final int COMPENSATION = 0;
-    private static final int DAYS_COUNT = 0;
     private static final String DESCRIPTION = "";
     private static final String DESTINATION = "";
     private static final LocalDate START_TRIP = LocalDate.now();

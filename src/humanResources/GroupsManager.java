@@ -1,5 +1,7 @@
 package humanResources;
 
+import java.time.LocalDate;
+
 public interface GroupsManager {
     void add(EmployeeGroup groupable);
     int remove(EmployeeGroup group);
@@ -15,7 +17,8 @@ public interface GroupsManager {
     int partTimeEmployeeQuantity();
     int staffEmployeeQuantity();
     int nowInTravel();
-    Employee[] getStaffNowInTravel();
+    Employee[] getStaffInTravel(LocalDate startTrip, LocalDate endTrip);
+    int staffInTravelQuantity(LocalDate startTrip, LocalDate endTrip);
 
 
     /*

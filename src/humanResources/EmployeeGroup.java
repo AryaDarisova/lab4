@@ -1,5 +1,7 @@
 package humanResources;
 
+import java.time.LocalDate;
+
 public interface EmployeeGroup {
     void add(Employee employee);
     Employee[] sortedEmployees();
@@ -23,7 +25,8 @@ public interface EmployeeGroup {
     int partTimeEmployeeQuantity();
     int staffEmployeeQuantity();
     int nowInTravel();
-    Employee[] getStaffNowInTravel();
+    Employee[] getStaffInTravel(LocalDate startTrip, LocalDate endTrip);
+    int staffInTravelQuantity(LocalDate startTrip, LocalDate endTrip);
 
     /*
     - возвращающий имя группы

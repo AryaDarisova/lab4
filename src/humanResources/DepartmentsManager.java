@@ -2,6 +2,8 @@ package humanResources;
 
 import exceptions.NegativeSizeException;
 
+import java.time.LocalDate;
+
 public class DepartmentsManager implements GroupsManager {
     private String name;
     private Department[] departments;
@@ -231,15 +233,28 @@ public class DepartmentsManager implements GroupsManager {
     }
 
     /*
+    метод, считающий кол-во сотрудников, которые в данный момент находились в командировке
+     */
+
+    public int staffInTravelQuantity(LocalDate startTrip, LocalDate endTrip) {
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            count += departments[i].staffInTravelQuantity(startTrip, endTrip);
+        }
+        return count;
+    }
+
+    /*
     Возвращающий массив сотрудников, находящихся в командировке в заданный
     период времени
+    todo метод включения в массив чуваков переписать
+    todo исключения дописать
      */
 
     @Override
-    public  Employee[] getStaffNowInTravel() {
-        Employee[] getStaffNowInTravel = new Employee[nowInTravel()];
+    public  Employee[] getStaffInTravel(LocalDate startTrip, LocalDate endTrip) {
+        Employee[] getStaffNowInTravel = new Employee[staffInTravelQuantity(startTrip, endTrip)];
         int count = 0;
-
         for (int i = 0; i < size; i++) {
             for (Employee x: departments[i].getEmployees()) {
                 if (x instanceof StaffEmployee)

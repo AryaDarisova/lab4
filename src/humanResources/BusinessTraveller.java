@@ -1,5 +1,7 @@
 package humanResources;
 
+import exceptions.IllegalDatesException;
+
 import java.time.LocalDate;
 
 public interface BusinessTraveller {
@@ -11,7 +13,7 @@ public interface BusinessTraveller {
    - возвращающий массив командировок.
      */
 
-    boolean addTravel(BusinessTravel travel);
+    boolean addTravel(BusinessTravel travel) throws IllegalDatesException;
     BusinessTravel[] getTravels();
     int getTravelsQuantity();
     boolean isOnTrip();

@@ -1,5 +1,7 @@
 package humanResources;
 
+import java.time.LocalDate;
+
 public class Project implements EmployeeGroup{
 
     //private add(node), removeNode(index i)
@@ -374,18 +376,37 @@ public class Project implements EmployeeGroup{
     }
 
     /*
+    в стаффемплоии есть метод считающий количество дней проведенных в командировке в заданный период.
+    сделать проверку, если у сотрудника этот метод возвращает значение больше 0, то кол-во сотрудников++
+    (это для создания массива)
+     */
+
+    @Override
+    public int staffInTravelQuantity(LocalDate startTrip, LocalDate endTrip) {
+        int count = 0;
+        Node node = head;
+        while (node != null) {
+            if (node.value instanceof StaffEmployee)
+                if (((StaffEmployee) node.value).isOnTrip(startTrip, endTrip) > 0)
+                    count++;
+            node = node.next;
+        }
+        return count;
+    }
+
+    /*
     Возвращающий массив сотрудников, находящихся в командировке в заданный
     период времени
      */
 
     @Override
-    public Employee[] getStaffNowInTravel() {
-        Employee[] getStaffNowInTravel = new Employee[nowInTravel()];
+    public Employee[] getStaffInTravel(LocalDate startTrip, LocalDate endTrip) {
+        Employee[] getStaffNowInTravel = new Employee[staffInTravelQuantity(startTrip, endTrip)];
         int count = 0;
         Node node = head;
         while (node != null) {
             if (node.value instanceof StaffEmployee) {
-                if (((StaffEmployee) node.value).isOnTrip())
+                if (((StaffEmployee) node.value).isOnTrip(startTrip, endTrip) > 0)
                     getStaffNowInTravel[count++] = node.value;
             }
             node = node.next;

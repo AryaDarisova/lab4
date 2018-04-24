@@ -429,17 +429,38 @@ public class Department implements EmployeeGroup{
     }
 
     /*
-    Возвращающий массив сотрудников, находящихся в командировке в заданный
-    период времени
+    в стаффемплоии есть метод считающий количество дней проведенных в командировке в заданный период.
+    сделать проверку, если у сотрудника этот метод возвращает значение больше 0, то кол-во сотрудников++
+    (это для создания массива)
      */
 
     @Override
-    public Employee[] getStaffNowInTravel() {
-        Employee[] getStaffNowInTravel = new Employee[nowInTravel()];
+    public int staffInTravelQuantity(LocalDate startTrip, LocalDate endTrip) {
         int count = 0;
         for (int i = 0; i < size; i++) {
             if (employees[i] instanceof StaffEmployee) {
-                if (((StaffEmployee) employees[i]).isOnTrip())
+                if (((StaffEmployee) employees[i]).isOnTrip(startTrip, endTrip) > 0)
+                    count++;
+            }
+        }
+        return count;
+    }
+
+    /*
+    Возвращающий массив сотрудников, находящихся в командировке в заданный
+    период времени
+    todo исключения дописать
+     */
+
+    @Override
+    public Employee[] getStaffInTravel(LocalDate startTrip, LocalDate endTrip) {
+
+
+        Employee[] getStaffNowInTravel = new Employee[staffInTravelQuantity(startTrip, endTrip)];
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            if (employees[i] instanceof StaffEmployee) {
+                if (((StaffEmployee) employees[i]).isOnTrip(startTrip, endTrip) > 0)
                     getStaffNowInTravel[count++] = employees[i];
             }
         }
