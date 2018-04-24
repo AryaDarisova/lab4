@@ -1,9 +1,11 @@
 package humanResources;
 
+import exceptions.AlreadyAddedException;
+
 import java.time.LocalDate;
 
 public interface EmployeeGroup {
-    void add(Employee employee);
+    void add(Employee employee) throws AlreadyAddedException;
     Employee[] sortedEmployees();
     Employee[] getEmployees();
     int employeeQuantity();

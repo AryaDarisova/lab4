@@ -1,6 +1,7 @@
 package humanResources;
 
 import java.time.LocalDate;
+import exceptions.AlreadyAddedException;
 
 public class Project implements EmployeeGroup{
 
@@ -22,7 +23,7 @@ public class Project implements EmployeeGroup{
         size = 0;
     }
 
-    public Project(String name, Employee[] employees) {
+    public Project(String name, Employee[] employees) throws AlreadyAddedException{
         this.name = name;
         for (Employee x: employees) {
             add(x);
@@ -31,7 +32,13 @@ public class Project implements EmployeeGroup{
     }
 
     @Override
-    public void add(Employee employee) {
+    public void add(Employee employee) throws AlreadyAddedException{
+        Node check = head;
+        while (check != null) {
+            if (check.value == employee)
+                throw new AlreadyAddedException("You are already added this employee!");
+            check = check.next;
+        }
         Node node = new Node(employee);
         addNode(node);
     }

@@ -1,9 +1,11 @@
 package humanResources;
 
+import exceptions.AlreadyAddedException;
+
 import java.time.LocalDate;
 
 public interface GroupsManager {
-    void add(EmployeeGroup groupable);
+    void add(EmployeeGroup groupable) throws AlreadyAddedException;
     int remove(EmployeeGroup group);
     boolean remove(String groupName);
     EmployeeGroup getEmployeeGroup(String name);

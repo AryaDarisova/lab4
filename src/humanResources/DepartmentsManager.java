@@ -1,6 +1,7 @@
 package humanResources;
 
 import exceptions.NegativeSizeException;
+import exceptions.AlreadyAddedException;
 
 import java.time.LocalDate;
 
@@ -43,7 +44,11 @@ public class DepartmentsManager implements GroupsManager {
     */
 
     @Override
-    public void add(EmployeeGroup groupable) {
+    public void add(EmployeeGroup groupable) throws AlreadyAddedException {
+        for (EmployeeGroup x: departments) {
+            if (x == groupable)
+                throw new AlreadyAddedException("You are already added this employee!");
+        }
         if (size >= departments.length) {
             EmployeeGroup[] departmentResize = new Department[size * 2];
             System.arraycopy(departments, 0, departmentResize, 0, departments.length);
@@ -247,8 +252,6 @@ public class DepartmentsManager implements GroupsManager {
     /*
     Возвращающий массив сотрудников, находящихся в командировке в заданный
     период времени
-    todo метод включения в массив чуваков переписать
-    todo исключения дописать
      */
 
     @Override
@@ -256,10 +259,8 @@ public class DepartmentsManager implements GroupsManager {
         Employee[] getStaffNowInTravel = new Employee[staffInTravelQuantity(startTrip, endTrip)];
         int count = 0;
         for (int i = 0; i < size; i++) {
-            for (Employee x: departments[i].getEmployees()) {
-                if (x instanceof StaffEmployee)
-                    if (((StaffEmployee) x).isOnTrip())
-                        getStaffNowInTravel[count++] = x;
+            for (Employee x: departments[i].getStaffInTravel(startTrip, endTrip)) {
+                getStaffNowInTravel[count++] = x;
             }
         }
         return getStaffNowInTravel;

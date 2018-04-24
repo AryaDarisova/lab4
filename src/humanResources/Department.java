@@ -1,6 +1,8 @@
 package humanResources;
 
 import java.time.LocalDate;
+
+import exceptions.AlreadyAddedException;
 import exceptions.NegativeSizeException;
 
 public class Department implements EmployeeGroup{
@@ -22,7 +24,7 @@ public class Department implements EmployeeGroup{
     - принимающий название и целое число – емкость массива, инициирующий массив указанным числом элементов (сами элементы имеют значение null).
      */
 
-    public Department(String name, int size) throws NegativeSizeException{
+    public Department(String name, int size) throws NegativeSizeException {
         if(size < 0 ) throw new NegativeSizeException("You enter a negative array size value! Please write size more than zero!");
         this.name = name;
         this.employees = new Employee[size];
@@ -45,7 +47,11 @@ public class Department implements EmployeeGroup{
     */
 
     @Override
-    public void add(Employee employee) {
+    public void add(Employee employee) throws AlreadyAddedException {
+        for (Employee x: employees) {
+            if (x == employee)
+                throw new AlreadyAddedException("You are already added this employee!");
+        }
         if (size >= employees.length) {
             Employee[] employeesResize = new Employee[size * 2];
             System.arraycopy(employees, 0, employeesResize, 0, employees.length);
@@ -449,7 +455,6 @@ public class Department implements EmployeeGroup{
     /*
     Возвращающий массив сотрудников, находящихся в командировке в заданный
     период времени
-    todo исключения дописать
      */
 
     @Override

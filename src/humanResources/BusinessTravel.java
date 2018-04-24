@@ -27,9 +27,9 @@ public final class BusinessTravel {
     }
 
     public  BusinessTravel (String destination, LocalDate startTrip, LocalDate endTrip, int compensation, String description) {
-        if(endTrip.isBefore(startTrip))
+        if (endTrip.isBefore(startTrip))
             throw new java.lang.IllegalArgumentException("Final date of trip can't be earlier than the beginning!");
-        if(compensation < 0)
+        if (compensation < 0)
             throw new java.lang.IllegalArgumentException("Compensation can't be less than zero!");
         this.destination = destination;
         this.startTrip = startTrip;

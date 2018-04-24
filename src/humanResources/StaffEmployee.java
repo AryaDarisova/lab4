@@ -1,6 +1,6 @@
 package humanResources;
 
-import exceptions.IllegalDatesException;
+import exceptions.*;
 
 import java.time.LocalDate;
 

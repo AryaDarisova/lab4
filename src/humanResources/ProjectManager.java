@@ -1,6 +1,7 @@
 package humanResources;
 
 import java.time.LocalDate;
+import exceptions.AlreadyAddedException;
 
 public class ProjectManager implements GroupsManager{
     private ProjectsNode head;
@@ -17,7 +18,7 @@ public class ProjectManager implements GroupsManager{
         size = 0;
     }
 
-    public ProjectManager(EmployeeGroup[] group) {
+    public ProjectManager(EmployeeGroup[] group) throws AlreadyAddedException {
         for (EmployeeGroup x: group) {
             add(x);
             size++;
@@ -29,7 +30,13 @@ public class ProjectManager implements GroupsManager{
      */
 
     @Override
-    public void add(EmployeeGroup group) {
+    public void add(EmployeeGroup group) throws AlreadyAddedException {
+        ProjectsNode check = head;
+        while (check != null) {
+            if (check.value == group)
+                throw new AlreadyAddedException("You are already added this employee!");
+            check = check.next;
+        }
         ProjectsNode node = new ProjectsNode(group);
         addNode(node);
     }
@@ -288,21 +295,16 @@ public class ProjectManager implements GroupsManager{
     /*
     Возвращающий массив сотрудников, находящихся в командировке в заданный
     период времени
-    todo метод включения в массив чуваков переписать
-
      */
 
     @Override
     public  Employee[] getStaffInTravel(LocalDate startTrip, LocalDate endTrip) {
-        Employee[] getStaffNowInTravel = new Employee[nowInTravel()];
+        Employee[] getStaffNowInTravel = new Employee[staffInTravelQuantity(startTrip, endTrip)];
         int count = 0;
         ProjectsNode node = head;
         while (node != null) {
-            for (Employee x: node.value.getEmployees()) {
-                if (x instanceof StaffEmployee) {
-                    if (((StaffEmployee) x).isOnTrip())
-                        getStaffNowInTravel[count++] = x;
-                }
+            for (Employee x: node.value.getStaffInTravel(startTrip, endTrip)) {
+                getStaffNowInTravel[count++] = x;
             }
             node = node.next;
         }
