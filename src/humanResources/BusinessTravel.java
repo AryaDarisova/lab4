@@ -59,7 +59,7 @@ public final class BusinessTravel {
     }
 
     public int getDaysCount() {
-        return endTrip.getDayOfYear() - startTrip.getDayOfYear();
+        return endTrip.getDayOfYear() - startTrip.getDayOfYear() + 1;
     }
 
     public String getDescription() {

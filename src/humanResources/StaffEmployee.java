@@ -70,13 +70,17 @@ public class StaffEmployee extends Employee implements BusinessTraveller{
 
     @Override
     public boolean addTravel(BusinessTravel travel) throws IllegalDatesException {
-        for (int i = travel.getStartTrip().getDayOfYear(); i < travel.getEndTrip().getDayOfYear(); i++) {
+        LocalDate day = travel.getStartTrip();
+        for (int i = 0; i < travel.getDaysCount(); i++) {
             for (BusinessTravel x: this.getTravels()) {
-                for (int j = x.getStartTrip().getDayOfYear(); j < x.getEndTrip().getDayOfYear(); j++) {
-                    if (i == j)
+                LocalDate dayTravel = x.getStartTrip();
+                for (int j = 0; j < x.getDaysCount(); j++) {
+                    if (day.isEqual(dayTravel))
                         throw new IllegalDatesException("Employee already have travel in that time!");
+                    dayTravel = dayTravel.plusDays(1);
                 }
             }
+            day = day.plusDays(1);
         }
         ListNode node = new ListNode(travel);
         addNode(node);
@@ -189,13 +193,17 @@ public class StaffEmployee extends Employee implements BusinessTraveller{
     @Override
     public int isOnTrip(LocalDate startTrip, LocalDate endTrip) {
         int countDay = 0;
-        for (int i = startTrip.getDayOfYear(); i < endTrip.getDayOfYear(); i++) {
+        LocalDate day = startTrip;
+        for (int i = 0; i < (endTrip.getDayOfYear() - startTrip.getDayOfYear() + 1); i++) {
             for (BusinessTravel x: this.getTravels()) {
-                for (int j = x.getStartTrip().getDayOfYear(); j < x.getEndTrip().getDayOfYear(); j++) {
-                    if (i == j)
+                LocalDate dayTravel = x.getStartTrip();
+                for (int j = 0; j < x.getDaysCount(); j++) {
+                    if (day.isEqual(dayTravel))
                         countDay++;
+                    dayTravel = dayTravel.plusDays(1);
                 }
             }
+            day = day.plusDays(1);
         }
         return countDay;
     }
